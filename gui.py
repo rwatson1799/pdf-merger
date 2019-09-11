@@ -15,7 +15,7 @@ def merge():
 
     # if the output file string is not empty
     if outputFile != "":
-        merge_pdfs(paths, output=outputFile)
+        merge_pdfs(paths, output=outputFile, setBookmarks=bookmarkVar.get())
 
 
 def open_file():
@@ -36,7 +36,6 @@ def move_file_up():
         fileLB.delete(index)
         fileLB.insert(index-1, filename)
 
-
 def move_file_down():
     index = fileLB.curselection()[0]
 
@@ -46,28 +45,41 @@ def move_file_down():
         fileLB.insert(index+1, filename)
 
 # Initialise the window
+bgColour = "light blue"
 window = Tk()
 window.title("PDF Merger")
+window['bg'] = bgColour
 # window.geometry("100x200")
 
 # Create widgets
-titleLabel = Label(window, text="PDF Merger", font=("Courier bold", 20))
-fileLB = Listbox(window, width=50)
-moveUpBtn = Button(window, text="Move Up", width=10, command=move_file_up)
-moveDownBtn = Button(window, text="Move Down", width=10, command=move_file_down)
-openBtn = Button(window, text="Open PDF", width=10, command=open_file)
-removeBtn = Button(window, text="Remove PDF", width=10, command=remove_file)
-mergeBtn = Button(window, text="Merge", width=10, command=merge)
+fileBtnFrame = Frame(window, background=bgColour)
+moveBtnFrame = Frame(window, background=bgColour)
+mergeOptionFrame = Frame(window, background=bgColour)
 
+titleLabel = Label(window, text="PDF Merger", font=("Courier bold", 30), background=bgColour)
+fileLB = Listbox(window, width=50)
+moveUpBtn = Button(moveBtnFrame, text="Move Up", width=10, command=move_file_up)
+moveDownBtn = Button(moveBtnFrame, text="Move Down", width=10, command=move_file_down)
+openBtn = Button(fileBtnFrame, text="Open PDF", width=10, command=open_file)
+removeBtn = Button(fileBtnFrame, text="Remove PDF", width=10, command=remove_file)
+mergeBtn = Button(mergeOptionFrame, text="Merge", width=10, command=merge)
+
+bookmarkVar = IntVar()
+bookmarkCB = Checkbutton(mergeOptionFrame, text="Set Bookmarks", width=10,
+onvalue=1, offvalue=0, variable=bookmarkVar, background=bgColour)
 
 # Pack widgets
 titleLabel.pack(padx=5, pady=5)
-openBtn.pack(padx=5, pady=5)
+fileBtnFrame.pack(padx=5, pady=5)
+fileLB.pack(fill=X, padx=5, pady=5)
+moveBtnFrame.pack(padx=5, pady=5)
+mergeOptionFrame.pack(padx=5, pady=5)
+openBtn.pack(side=LEFT, padx=25, pady=5)
+removeBtn.pack(side=RIGHT, padx=25, pady=5)
 moveUpBtn.pack(padx=5, pady=5)
 moveDownBtn.pack(padx=5, pady=5)
-fileLB.pack(fill=X, padx=5, pady=5)
-removeBtn.pack(padx=5, pady=5)
-mergeBtn.pack(padx=5, pady=5)
+mergeBtn.pack(side=LEFT, padx=25, pady=5)
+bookmarkCB.pack(side=RIGHT, padx=25, pady=5)
 
 # Start the main loop
 window.mainloop()
