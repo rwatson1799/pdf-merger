@@ -29,27 +29,32 @@ def remove_file():
     fileLB.delete(ANCHOR)
 
 def move_file_up():
+    if fileLB.size() == 0:
+        return
+
     index = fileLB.curselection()[0]
 
     if index > 0:
         filename = fileLB.get(index)
         fileLB.delete(index)
-        fileLB.insert(index-1, filename)
+        fileLB.insert(index - 1, filename)
 
 def move_file_down():
+    if fileLB.size() == 0:
+        return
+
     index = fileLB.curselection()[0]
 
     if index < fileLB.size():
         filename = fileLB.get(index)
         fileLB.delete(index)
-        fileLB.insert(index+1, filename)
+        fileLB.insert(index + 1, filename)
 
 # Initialise the window
 bgColour = "light blue"
 window = Tk()
 window.title("PDF Merger")
 window['bg'] = bgColour
-# window.geometry("100x200")
 
 # Create widgets
 fileBtnFrame = Frame(window, background=bgColour)
@@ -83,4 +88,3 @@ bookmarkCB.pack(side=RIGHT, padx=25, pady=5)
 
 # Start the main loop
 window.mainloop()
-
