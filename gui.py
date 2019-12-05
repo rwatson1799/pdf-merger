@@ -4,14 +4,21 @@ from tkinter import filedialog
 from pdf_merging import merge_pdfs
 import os
 
+fileDict = {}
+
 # Helper functions
 def merge():
-    paths = fileLB.get(0, END)
+    files = fileLB.get(0, END)
     outputFile = filedialog.asksaveasfilename(initialdir="/", title="Select save location", filetypes=[("PDF files", "*.pdf")])
 
     # append the file extension if it doesn't exist
     if outputFile[-4:] != ".pdf":
         outputFile += ".pdf"
+    
+    # create array of file paths from the dictionary
+    paths = []
+    for name in files:
+        paths.append(fileDict[name])
 
     # if the output file string is not empty
     if outputFile != "":
@@ -22,8 +29,11 @@ def open_file():
     filenames = filedialog.askopenfilenames(initialdir="/", title="Select files", filetypes=[("PDF files", "*.pdf")])
     
     for name in filenames:
-        fileLB.insert(END, name)
-        # fileLB.insert(END, os.path.basename(name))
+        shortName = os.path.basename(name)
+        fileDict[shortName] = name
+
+        # fileLB.insert(END, name)
+        fileLB.insert(END, os.path.basename(name))
 
 def remove_file():
     fileLB.delete(ANCHOR)
